@@ -1,0 +1,73 @@
+* {
+  transition: background-color 0.5s ease, color 0.5s ease,
+    border-color 0.5s ease;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.profile-header {
+  background-color: var(--primary-color);
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.actions {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.actions .followers {
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.actions .follow-form button,
+#follow-toggle,
+#theme-toggle,
+a > button {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  margin: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.actions .follow-form button {
+  background-color: var(--primary-color);
+}
+
+#theme-toggle:hover,
+.actions .follow-form button:hover,
+a > button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* group toggle and back buttons on the right */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
