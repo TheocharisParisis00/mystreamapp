@@ -117,4 +117,12 @@ function updateProfile($conn, $username, $fieldsToUpdate) {
     return $stmt->execute($params);
 }
 
+function createList($conn, $username, $listname, $description){}
+function deleteList($conn, $username, $listname){}
+
+function addToList($conn, $username, $listname, $songId){}
+function removeFromList($conn, $username, $listname, $songId){}
+
+function createSong($conn, $songName, $artist){}
+function deleteSong($conn, $songId){}
 ?>
