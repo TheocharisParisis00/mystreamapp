@@ -117,8 +117,14 @@ function updateProfile($conn, $username, $fieldsToUpdate) {
     return $stmt->execute($params);
 }
 
-function createList($conn, $username, $listname, $description){}
-function deleteList($conn, $username, $listname){}
+function createList($conn, $username, $userId, $listname, $description) {
+    $stmt = $conn->prepare("INSERT INTO playlists (user_id, name, description) VALUES (:user_id, :name, :description)");
+    $stmt->bindParam(':user_id', $userId);
+    $stmt->bindParam(':name', $listname);
+    $stmt->bindParam(':description', $description);
+    $stmt->execute();
+}
+function deleteList($conn, $listId){}
 
 function addToList($conn, $username, $listname, $songId){}
 function removeFromList($conn, $username, $listname, $songId){}
