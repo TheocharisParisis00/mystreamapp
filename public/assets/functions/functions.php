@@ -62,8 +62,6 @@ function getFollowersUsernames($conn, $username){
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 }
-
-
 function toggleFollow($conn, $follower, $following){
 
     if (isFollowing($conn, $follower, $following)) 
@@ -78,13 +76,11 @@ function toggleFollow($conn, $follower, $following){
     header("Location: other_profile.php");
     exit();
 }
-
 function deleteProfile($conn, $username) {
     $stmt = $conn->prepare("DELETE FROM users WHERE username = :username");
     $stmt->bindParam(':username', $username);
     $stmt->execute();
 }
-
 function updateProfile($conn, $username, $fieldsToUpdate) {
     if (empty($fieldsToUpdate) || !is_array($fieldsToUpdate)) {
         return false;
@@ -116,19 +112,56 @@ function updateProfile($conn, $username, $fieldsToUpdate) {
 
     return $stmt->execute($params);
 }
-
 function createList($conn, $username, $userId, $listname, $description) {
     $stmt = $conn->prepare("INSERT INTO playlists (user_id, name, description) VALUES (:user_id, :name, :description)");
     $stmt->bindParam(':user_id', $userId);
     $stmt->bindParam(':name', $listname);
     $stmt->bindParam(':description', $description);
     $stmt->execute();
+    return $conn->lastInsertId();
 }
 function deleteList($conn, $listId){}
+function createSong($conn, $song) {
+    $stmt = $conn->prepare("SELECT id FROM songs WHERE youtube_id = :youtube_id");
+    $stmt->bindParam(':youtube_id', $song['youtube_id']);
+    $stmt->execute();
+    $songId = $stmt->fetchColumn();
 
-function addToList($conn, $username, $listname, $songId){}
+    if ($songId) {
+        return $songId;
+    }
+
+    $insert = $conn->prepare("INSERT INTO songs (title, artist, youtube_id) VALUES (:title, :artist, :youtube_id)");
+    $insert->bindParam(':title', $song['title']);
+    $insert->bindParam(':artist', $song['artist']);
+    $insert->bindParam(':youtube_id', $song['youtube_id']);
+    $insert->execute();
+
+    return $conn->lastInsertId();
+}
+
+function addToList($conn, $songId, $listId) {
+    error_log("addToList called with songId: $songId, listId: $listId");
+    try {
+        // Get the next position in the playlist
+        $stmt = $conn->prepare("SELECT COALESCE(MAX(position), 0) + 1 FROM playlist_songs WHERE playlist_id = :playlist_id");
+        $stmt->bindParam(':playlist_id', $listId);
+        $stmt->execute();
+        $position = $stmt->fetchColumn();
+
+        // Insert into playlist_songs with position
+        $insert = $conn->prepare("INSERT INTO playlist_songs (playlist_id, song_id, position) VALUES (:playlist_id, :song_id, :position)");
+        $insert->bindParam(':playlist_id', $listId);
+        $insert->bindParam(':song_id', $songId);
+        $insert->bindParam(':position', $position);
+        $insert->execute();
+
+        error_log("addToList executed successfully.");
+    } catch (PDOException $e) {
+        error_log("Failed to add song to playlist: " . $e->getMessage());
+    }
+}
 function removeFromList($conn, $username, $listname, $songId){}
 
-function createSong($conn, $songName, $artist){}
 function deleteSong($conn, $songId){}
 ?>

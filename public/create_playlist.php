@@ -16,13 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $userId = getUserIdByUsername($conn, $username);
 
     if (!empty($playlistName)) {
-        createList($conn, $username, $userId, $playlistName, $description);
+        $_SESSION['playlist_id'] = createList($conn, $username, $userId, $playlistName, $description);
         header("Location: add_songs.php");
         exit();
     } else {
         echo "<p>Please enter a playlist name.</p>";
     }
-}
+} 
 
 ?>
 <!DOCTYPE html>
@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <title>Create New Playlist</title>
 </head>  
 <body>
+<a href="userpage.php"><button>Go back</button></a>
 <form method="POST" action="">
     <input type="hidden" name="action" value="create_playlist">
 
