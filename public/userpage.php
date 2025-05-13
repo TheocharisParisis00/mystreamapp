@@ -71,7 +71,6 @@ $user = new User($conn, $_SESSION['username']);
                 />
                 <button type="submit">Search</button>
             </form>
-            <div id="search-results"></div>
         </section>
         <div style="position: fixed; bottom: 20px; right: 20px;">
             <a href="create_playlist.php" class="button-link">Create New Playlist</a>
