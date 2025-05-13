@@ -121,6 +121,12 @@ function createList($conn, $username, $userId, $listname, $description) {
     return $conn->lastInsertId();
 }
 function deleteList($conn, $listId){}
+function returnListName($conn, $listId) {
+    $stmt = $conn->prepare("SELECT name FROM playlists WHERE id = :listId");
+    $stmt->bindParam(':listId', $listId);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
 function createSong($conn, $song) {
     $stmt = $conn->prepare("SELECT id FROM songs WHERE youtube_id = :youtube_id");
     $stmt->bindParam(':youtube_id', $song['youtube_id']);
