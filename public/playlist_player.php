@@ -4,7 +4,13 @@ session_start();
 require_once 'config.php';
 require_once 'assets/functions/functions.php';
 
-// By this point you’ve already authenticated and confirmed the playlist exists
+if(!listExists($conn, $_SESSION['playlist_name'])) {
+    echo "<script>
+        alert('Playlist does not exist.');
+        window.location.href = 'userpage.php';
+    </script>";
+    exit();
+}
 $list = getlist($conn, $_SESSION['playlist_name']);
 ?>
 <!DOCTYPE html>
@@ -18,8 +24,8 @@ $list = getlist($conn, $_SESSION['playlist_name']);
 </head>
 <body>
     <header class="page-header">
-        <button class="back-button" onclick="window.history.back();">Go Back</button>
         <span class="playlist-name"><?php echo htmlspecialchars($_SESSION['playlist_name']); ?></span>
+        <a href="userpage.php"><button class="back-button">Go Back</button></a>
     </header>
 
     <div class="content-container">
@@ -47,7 +53,7 @@ $list = getlist($conn, $_SESSION['playlist_name']);
             <iframe
                 id="videoPlayer"
                 width="100%"
-                height="400"
+                height="360"
                 frameborder="0"
                 allow="autoplay; encrypted-media"
                 allowfullscreen>
@@ -55,11 +61,6 @@ $list = getlist($conn, $_SESSION['playlist_name']);
         </section>
     </div>
 
-    <script>
-        function playSong(videoId) {
-            document.getElementById('videoPlayer').src =
-                'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
-        }
-    </script>
+    <script src="assets/js/play.js"></script>
     <script src="assets/js/main.js"></script>
 </html>
