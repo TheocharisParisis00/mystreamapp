@@ -8,7 +8,21 @@ if (!isset($_SESSION['username'])) {
 
 require_once 'config.php';
 require_once 'assets/classes/User.php';
+
 require_once 'assets/functions/functions.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_playlist'])) {
+    $playlistId = $_POST['playlist_id'];
+    deleteList($conn, $playlistId);
+    header('Location: profile.php');
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['play_playlist'])) {
+    $_SESSION['playlist_name'] = $_POST['playlist_name'];
+    header('Location: playlist_player.php');
+    exit();
+}
 
 $user = new User($conn, $_SESSION['username']);
 
@@ -16,7 +30,7 @@ $user = new User($conn, $_SESSION['username']);
 $followers = getFollowersUsernames($conn, $user->username);
 $followersCount = count($followers);
 
-
+$playlists = getAllPlaylists($conn, $user->username);
 
 ?>
 <!DOCTYPE html>
@@ -37,12 +51,29 @@ $followersCount = count($followers);
     </header>
     <main class="container">
         <section>
-            <h2>Info</h2>
-            <p><?php echo $followersCount;?> Followers</p>
+            <h2><?php echo $followersCount;?> Followers</h2>
         </section>
         <section>
             <h2>My Playlists</h2>
-            <p>This section will display your created playlists.</p>
+            <ul>
+                <?php if (empty($playlists)): ?>
+                    <p>No playlists available.</p>
+                <?php else: ?>
+                    <?php foreach ($playlists as $playlist): ?>
+                        <li>
+                            <span><?php echo htmlspecialchars($playlist['name']); ?></span>
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="playlist_name" value="<?php echo htmlspecialchars($playlist['name']); ?>">
+                                <button type="submit" name="play_playlist">Play</button>
+                            </form>
+                            <a href="add_songs.php"><button>Add Songs</button></a>
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="playlist_id" value="<?php echo htmlspecialchars($playlist['id']); ?>">
+                                <button type="submit" name="delete_playlist">Delete</button>
+                            </form>
+                        </li>
+                    <?php endforeach; ?>
+                <?php endif; ?>
         </section>
         <div style="position: fixed; bottom: 20px; right: 20px;">
             <a href="edit_profile.php" class="button-link">Edit Profile</a>
