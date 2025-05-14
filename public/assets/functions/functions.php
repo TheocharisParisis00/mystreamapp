@@ -127,6 +127,35 @@ function returnListName($conn, $listId) {
     $stmt->execute();
     return $stmt->fetchColumn();
 }
+function listExists($conn, $listname) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM playlists WHERE name = :listname");
+    $stmt->bindParam(':listname', $listname);
+    $stmt->execute();
+    return $stmt->fetchColumn() > 0;
+}
+
+function getlist($conn, $listname){
+    $sql = "
+    SELECT 
+        s.id,
+        s.title,
+        s.artist,
+        s.youtube_id,
+        ps.position,
+        ps.added_at
+    FROM playlists p
+    INNER JOIN playlist_songs ps
+        ON p.id = ps.playlist_id
+    INNER JOIN songs s
+        ON ps.song_id = s.id
+    WHERE p.name = :listname
+    ORDER BY ps.position ASC
+    ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':listname', $listname);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);   
+}
 function createSong($conn, $song) {
     $stmt = $conn->prepare("SELECT id FROM songs WHERE youtube_id = :youtube_id");
     $stmt->bindParam(':youtube_id', $song['youtube_id']);

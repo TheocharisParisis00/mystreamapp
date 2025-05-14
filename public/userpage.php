@@ -11,6 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['other_username'])) {
     exit();
 }
 
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
+    $_SESSION['playlist_name'] = $_POST['playlist_name'];
+    header("Location: playlist_player.php");
+    exit();
+}
+
 require_once 'config.php';
 require_once 'assets/classes/User.php';
 require_once 'assets/functions/functions.php';
@@ -23,7 +29,11 @@ if (!userExists($conn, $_SESSION['username'])) {
 
 $user = new User($conn, $_SESSION['username']);
 
-
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
+    $_SESSION['playlist_name'] = $_POST['playlist_name'];
+    header("Location: playlist_player.php");
+    exit();
+}
 
 ?>
 
@@ -62,8 +72,9 @@ $user = new User($conn, $_SESSION['username']);
 
         <section id="playlist-search">
             <h3>Search Playlists</h3>
-            <form id="search-form">
+            <form id="search-form" method="post">
                 <input
+                    name="playlist_name"
                     type="text"
                     id="search-query"
                     placeholder="Search for a playlist..."
@@ -71,7 +82,6 @@ $user = new User($conn, $_SESSION['username']);
                 />
                 <button type="submit">Search</button>
             </form>
-            <div id="search-results"></div>
         </section>
         <div style="position: fixed; bottom: 20px; right: 20px;">
             <a href="create_playlist.php" class="button-link">Create New Playlist</a>
