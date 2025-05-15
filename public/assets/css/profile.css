@@ -1,0 +1,16 @@
+.playlist-item {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+.playlist-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.playlist-name {
+  font-weight: bold;
+}
+.playlist-actions .playlist-action-form {
+  display: inline-block;
+  margin-left: 0.5rem;
+}

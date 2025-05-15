@@ -59,3 +59,69 @@ section#playlist-search h3 {
   display: block;
   text-align: left;
 }
+
+/* Playlists from People You Follow section */
+#show_playlists {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+#show_playlists h3 {
+  margin-bottom: 15px;
+  color: var(--text-color);
+}
+
+.playlist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align items to the left */
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 12px 18px;
+  margin-bottom: 12px;
+  transition: box-shadow 0.2s;
+  position: relative;
+}
+
+.playlist-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.playlist-item span {
+  font-size: 16px;
+  color: var(--text-color);
+  font-weight: 500;
+  margin-right: 24px;
+  flex: 1; /* Take up available space */
+}
+
+.playlist-item form {
+  margin: 0;
+  flex-shrink: 0;
+  margin-left: auto; /* Push the button to the far right */
+}
+
+.playlist-item button {
+  padding: 7px 18px;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.playlist-item button:hover {
+  background-color: var(--accent-color);
+}

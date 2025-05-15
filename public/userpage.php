@@ -8,6 +8,8 @@ session_start();
 require_once 'config.php';
 require_once 'assets/functions/functions.php';
 
+$playlists = getAllFollowerPlaylists($conn, $_SESSION['username']);
+
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
@@ -20,6 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['other_username'])) {
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
+    $_SESSION['playlist_name'] = $_POST['playlist_name'];
+    header("Location: playlist_player.php");
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
     $_SESSION['playlist_name'] = $_POST['playlist_name'];
     header("Location: playlist_player.php");
     exit();
@@ -72,7 +80,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
                 <button type="submit">Search</button>
             </form>
         </section>
-        <section id="show_playlists"></section>
+        <section id="show_playlists">
+            <h3>Playlists from People You Follow</h3>
+            <?php if (!empty($playlists)): ?>
+                <ul class="playlist-list">
+                    <?php foreach ($playlists as $playlist): ?>
+                        <li class="playlist-item">
+                            <span><?php echo htmlspecialchars($playlist['name']); ?></span>
+                            <form action="" method="post" style="display:inline;">
+                                <input type="hidden" name="playlist_name" value="<?php echo htmlspecialchars($playlist['name']); ?>">
+                                <button type="submit">Play</button>
+                            </form>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>No playlists found from people you follow.</p>
+            <?php endif; ?>
+        </section>
         <div style="position: fixed; bottom: 20px; right: 20px;">
             <a href="create_playlist.php" class="button-link">Create New Playlist</a>
         </div>

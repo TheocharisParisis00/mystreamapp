@@ -6,14 +6,12 @@ function userExists($conn, $username) {
     $stmt->execute();
     return $stmt->fetchColumn() > 0;
 }
-
 function getUserIdByUsername($conn, $username) {
     $stmt = $conn->prepare("SELECT id FROM users WHERE username = :username");
     $stmt->bindParam(':username', $username);
     $stmt->execute();
     return $stmt->fetchColumn();
 }
-
 function isFollowing($conn, $followerUsername, $followedUsername) {
     $followerId = getUserIdByUsername($conn, $followerUsername);
     $followedId = getUserIdByUsername($conn, $followedUsername);
@@ -26,7 +24,6 @@ function isFollowing($conn, $followerUsername, $followedUsername) {
     $stmt->execute();
     return $stmt->fetchColumn() > 0;
 }
-
 function followUser($conn, $followerUsername, $followedUsername) {
     if (!isFollowing($conn, $followerUsername, $followedUsername)) {
         $followerId = getUserIdByUsername($conn, $followerUsername);
@@ -40,7 +37,6 @@ function followUser($conn, $followerUsername, $followedUsername) {
         $stmt->execute();
     }
 }
-
 function unfollowUser($conn, $followerUsername, $followedUsername) {
     $followerId = getUserIdByUsername($conn, $followerUsername);
     $followedId = getUserIdByUsername($conn, $followedUsername);
@@ -52,7 +48,6 @@ function unfollowUser($conn, $followerUsername, $followedUsername) {
     $stmt->bindParam(':followed', $followedId);
     $stmt->execute();
 }
-
 function getFollowersUsernames($conn, $username){
     $userId = getUserIdByUsername($conn, $username);
     if(!$userId) return [];
@@ -61,6 +56,14 @@ function getFollowersUsernames($conn, $username){
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 
+}
+function getFollowingUsernames($conn, $username){
+    $userId = getUserIdByUsername($conn, $username);
+    if(!$userId) return [];
+    $stmt = $conn->prepare("SELECT u.username FROM user_follows uf JOIN users u ON uf.followed_id = u.id WHERE uf.follower_id = :userId");
+    $stmt->bindParam(':userId', $userId);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 function toggleFollow($conn, $follower, $following){
 
@@ -118,8 +121,7 @@ function deleteList($conn, $listId){
     $stmt = $conn->prepare("DELETE FROM playlists WHERE id = :listId");
     $stmt->bindParam(':listId', $listId);
     $stmt->execute();
-}
-    
+} 
 function returnListName($conn, $listId) {
     $stmt = $conn->prepare("SELECT name FROM playlists WHERE id = :listId");
     $stmt->bindParam(':listId', $listId);
@@ -186,7 +188,6 @@ function addToList($conn, $songId, $listId) {
         error_log("Failed to add song to playlist: " . $e->getMessage());
     }
 }
-function removeFromList($conn, $listname, $songId){}
 function deleteSong($conn, $songId){
 }
 function getAllPlaylists($conn, $username){
@@ -195,5 +196,20 @@ function getAllPlaylists($conn, $username){
     $stmt->bindParam(':userId', $userd);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+function getAllFollowerPlaylists($conn, $username){
+    $follows = getFollowingUsernames($conn, $username);
+    $playlists = [];
+    if (empty($follows)) {
+        return $playlists;
+    }
+    $placeholders = implode(',', array_fill(0, count($follows), '?'));
+    $sql = "SELECT p.* FROM playlists p
+            JOIN users u ON p.user_id = u.id
+            WHERE u.username IN ($placeholders)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute($follows);
+    $playlists = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $playlists;
 }
 ?>

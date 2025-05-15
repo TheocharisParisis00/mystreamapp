@@ -1,10 +1,8 @@
-/* Smooth transitions for background, color, and border */
 * {
   transition: background-color 0.5s ease, color 0.5s ease,
     border-color 0.5s ease;
 }
 
-/* Header Styles */
 header {
   background-color: var(--primary-color);
   color: var(--text-color);
@@ -14,18 +12,15 @@ header {
   align-items: center;
 }
 
-/* Header Button Container */
 .header-buttons {
   display: flex;
   gap: 0.5rem;
 }
 
-/* Main Content */
 main {
   padding: 2rem;
 }
 
-/* Buttons */
 button {
   background-color: var(--secondary-color);
   color: var(--text-color);
@@ -36,7 +31,6 @@ button {
   border-radius: 5px;
 }
 
-/* Theme Toggle Button with animation */
 button#theme-toggle {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -49,7 +43,6 @@ button#theme-toggle:active {
   transform: scale(0.95);
 }
 
-/* Links */
 a {
   color: var(--primary-color);
   text-decoration: none;
@@ -59,14 +52,12 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Utility Classes */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-/* Card Component */
 .card {
   background-color: var(--background-color);
   border: 1px solid var(--border-color);
@@ -75,12 +66,10 @@ a:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark Mode Specific Card Styling */
 [data-theme="dark"] .card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-/* Accordion Styles */
 .accordion-header {
   cursor: pointer;
   font-weight: bold;
@@ -116,7 +105,6 @@ a:hover {
   max-height: 500px;
 }
 
-/* Cookie Banner Styles */
 .cookie-banner {
   position: fixed;
   bottom: 0;
@@ -156,7 +144,6 @@ a:hover {
   background-color: var(--accent-color);
 }
 
-/* Cookie Banner Slide Up Animation */
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -168,19 +155,16 @@ a:hover {
   }
 }
 
-/* Apply the animation to the cookie banner */
 .cookie-banner {
   animation: slideUp 0.5s ease forwards;
 }
 
-/* Sign Up and Log In Button Hover Effects */
 #signup-button:hover,
 #login-button:hover {
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }
 
-/* Button Link Styles */
 .button-link {
   background-color: var(--secondary-color);
   color: var(--text-color);
