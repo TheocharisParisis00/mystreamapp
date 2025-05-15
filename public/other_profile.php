@@ -20,7 +20,7 @@ if (!userExists($conn, $_SESSION['other_profile'])) {
 $following = isFollowing($conn, $_SESSION['username'], $_SESSION['other_profile']);
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle'])) 
 {
-    toggleFollow($conn, $_SESSION['username'], $user->username);
+    toggleFollow($conn, $_SESSION['username'], $_SESSION['other_profile']);
 }
 $followres = getFollowersUsernames($conn, $_SESSION['other_profile']);
 $followers = count($followres);
