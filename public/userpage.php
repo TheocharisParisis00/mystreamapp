@@ -26,9 +26,6 @@ if (!userExists($conn, $_SESSION['username'])) {
     exit();
 }
 
-
-$user = new User($conn, $_SESSION['username']);
-
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
     $_SESSION['playlist_name'] = $_POST['playlist_name'];
     header("Location: playlist_player.php");
@@ -41,14 +38,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $user->username; ?></title>
+    <title><?php echo $_SESSION['username']; ?></title>
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/user.css">
     <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
     <header>
-        <h1>Welcome, <?php echo htmlspecialchars($user->username); ?>!</h1>
+        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
         <button id="theme-toggle">Dark/Light</button>
         <a href="profile.php" id="profile-button" class="button-link">Profile</a>
         <a href="logout.php" id="sign-out" class="button-link">Sign Out</a>

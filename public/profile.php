@@ -24,13 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['play_playlist'])) {
     exit();
 }
 
-$user = new User($conn, $_SESSION['username']);
-
-
-$followers = getFollowersUsernames($conn, $user->username);
+$followers = getFollowersUsernames($conn, $_SESSION['username']);
 $followersCount = count($followers);
 
-$playlists = getAllPlaylists($conn, $user->username);
+$playlists = getAllPlaylists($conn, $_SESSION['username']);
 
 ?>
 <!DOCTYPE html>
@@ -44,7 +41,7 @@ $playlists = getAllPlaylists($conn, $user->username);
 </head>
 <body>
     <header>
-        <h1><?php echo htmlspecialchars($user->username); ?>'s Profile</h1>
+        <h1><?php echo htmlspecialchars($_SESSION['username']); ?>'s Profile</h1>
         <button id="theme-toggle">Dark/Light</button>
         <a href="userpage.php" id="go-back-button" class="button-link">Go Back</a>
         <a href="logout.php" id="sign-out" class="button-link">Sign Out</a>
