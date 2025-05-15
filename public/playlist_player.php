@@ -4,10 +4,10 @@ session_start();
 require_once 'config.php';
 require_once 'assets/functions/functions.php';
 
-if(!listExists($conn, $_SESSION['playlist_name'])) {
+if (!listExists($conn, $_SESSION['playlist_name'])) {
     echo "<script>
         alert('Playlist does not exist.');
-        window.location.href = 'userpage.php';
+        window.history.back();
     </script>";
     exit();
 }

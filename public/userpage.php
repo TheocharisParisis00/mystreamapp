@@ -1,5 +1,13 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
+
+require_once 'config.php';
+require_once 'assets/functions/functions.php';
+
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
@@ -16,29 +24,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
     header("Location: playlist_player.php");
     exit();
 }
-
-require_once 'config.php';
-require_once 'assets/classes/User.php';
-require_once 'assets/functions/functions.php';
-
-if (!userExists($conn, $_SESSION['username'])) {
-    echo "<script>alert('User does not exist.'); window.history.back();</script>";
-    exit();
-}
-
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
-    $_SESSION['playlist_name'] = $_POST['playlist_name'];
-    header("Location: playlist_player.php");
-    exit();
-}
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $_SESSION['username']; ?></title>
+    <title>Userpge</title>
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/user.css">
     <link rel="stylesheet" href="assets/css/index.css">
@@ -80,6 +72,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['playlist_name'])) {
                 <button type="submit">Search</button>
             </form>
         </section>
+        <section id="show_playlists"></section>
         <div style="position: fixed; bottom: 20px; right: 20px;">
             <a href="create_playlist.php" class="button-link">Create New Playlist</a>
         </div>

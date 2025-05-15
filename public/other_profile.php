@@ -7,7 +7,6 @@ if (!isset($_SESSION['username'])) {
 }
 
 require_once 'config.php';
-require_once 'assets/classes/User.php';
 require_once 'assets/functions/functions.php';
 
 if (!userExists($conn, $_SESSION['other_profile'])) {
