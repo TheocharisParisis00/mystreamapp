@@ -1,5 +1,8 @@
 # MyStreamApp
 
+Aριθμός Μητρώου Φοιτητή : Π2017162
+link for microsoft teams presentation : https://ioniogr0-my.sharepoint.com/:v:/g/personal/p17pari_ionio_gr/EZYobu4hcLpNtRybrCvCzjMBKpLn98xN0_NAtGS4jY3kCQ?e=TDgpZi
+
 Το **MyStreamApp** είναι ένα webapp που επιτρέπει την αναπαραγωγή μουσικών βίντεο από το YouTube, σχεδιασμένο στο πλαίσιο εργασίας εξαμήνου. Η εφαρμογή προσφέρει μια εύκολη και ευχάριστη εμπειρία στον χρήστη για αναζήτηση και παρακολούθηση μουσικών βίντεο απευθείας από τον browser του.
 
 ## Λειτουργίες
@@ -23,4 +26,4 @@
 
 ## How to init?
 
-- Το webapp τρέχει στον localhost και για την δημιουργια των tables import init.sql 
+- Το webapp τρέχει στον localhost και για την δημιουργια των tables import init.sql
